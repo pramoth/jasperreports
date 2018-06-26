@@ -27,6 +27,7 @@ import java.awt.font.FontRenderContext;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import org.apache.commons.logging.Log;
@@ -710,8 +711,8 @@ public class TextMeasurer implements JRTextMeasurer
 			
 			BreakIterator breakIterator = 
 				truncateAtChar 
-				? BreakIterator.getCharacterInstance() 
-				: BreakIterator.getLineInstance();
+				? BreakIterator.getCharacterInstance(new Locale("th","TH"))
+				: BreakIterator.getLineInstance(new Locale("th","TH"));
 			breakIterator.setText(text);
 
 			if (renderNextLine(lastLineWrapper, null, new int[]{0}, new TabStop[]{null}, new boolean[]{false}))
