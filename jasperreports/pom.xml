@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.sf.jasperreports</groupId>
 	<artifactId>jasperreports</artifactId>
-	<version>6.6.0.2-SNAPSHOT</version>
+	<version>6.6.0.thai</version>
 	<packaging>jar</packaging>
 	<name>JasperReports</name>
 	<url>http://jasperreports.sourceforge.net</url>
@@ -17,7 +17,7 @@
 	<scm>
 		<connection>scm:git:git@github.com:pramoth/jasperreports.git</connection>
 		<url>https://github.com/TIBCOSoftware/jasperreports</url>
-	  <tag>HEAD</tag>
+	  <tag>jasperreports-6.6.0.thai</tag>
   </scm>
 	<distributionManagement>
 		<repository>
