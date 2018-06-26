@@ -16,10 +16,19 @@
 		</license>
 	</licenses>
 	<scm>
-		<connection>scm:git:https://github.com/TIBCOSoftware/jasperreports.git</connection>
-		<tag>jr-6-6-0</tag>
+		<connection>scm:git:git@github.com:pramoth/jasperreports.git</connection>
 		<url>https://github.com/TIBCOSoftware/jasperreports</url>
 	</scm>
+	<distributionManagement>
+		<repository>
+			<id>Geniustree Release</id>
+			<url>https://nexus.geniustree.io/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>Geniustree Snapshots</id>
+			<url>https://nexus.geniustree.io/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
