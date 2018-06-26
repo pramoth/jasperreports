@@ -47,6 +47,7 @@ import java.lang.Character.UnicodeBlock;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedCharacterIterator.Attribute;
 import java.text.AttributedString;
+import java.text.BreakIterator;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -598,7 +599,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		
 		if (configuration.isForceLineBreakPolicy())
 		{
-			splitCharacter = new BreakIteratorSplitCharacter();
+			splitCharacter = new BreakIteratorSplitCharacter(BreakIterator.getLineInstance(new Locale("th","TH")));
 		}
 		
 		crtOddPageOffsetX = configuration.getOddPageOffsetX();
