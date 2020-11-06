@@ -48,6 +48,7 @@ import java.text.AttributedCharacterIterator;
 import java.text.AttributedCharacterIterator.Attribute;
 import java.text.AttributedString;
 import java.util.ArrayList;
+import java.text.BreakIterator;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -379,7 +380,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 	public static final String EXCEPTION_MESSAGE_KEY_DOCUMENT_ERROR = "export.pdf.document.error";
 	public static final String EXCEPTION_MESSAGE_KEY_FONT_LOADING_ERROR = "export.pdf.font.loading.error";
 	public static final String EXCEPTION_MESSAGE_KEY_REPORT_GENERATION_ERROR = "export.pdf.report.generation.error";
-	
+
 	/**
 	 * Prefix of properties that specify font files for the PDF exporter.
 	 */
@@ -401,9 +402,9 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		sinceVersion = PropertyConstants.VERSION_1_0_0
 		)
 	public static final String PDF_FONT_DIRS_PREFIX = PDF_EXPORTER_PROPERTIES_PREFIX + "fontdir.";
-	
+
 	/**
-	 * 
+	 *
 	 */
 	@Property(
 		category = PropertyConstants.CATEGORY_EXPORT,
@@ -412,9 +413,9 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		valueType = PdfFieldTypeEnum.class
 		)
 	public static final String PDF_FIELD_TYPE = PDF_EXPORTER_PROPERTIES_PREFIX + "field.type";
-	
+
 	/**
-	 * 
+	 *
 	 */
 	@Property(
 		category = PropertyConstants.CATEGORY_EXPORT,
@@ -424,9 +425,9 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		defaultValue = PropertyConstants.BOOLEAN_FALSE
 		)
 	public static final String PDF_FIELD_TEXT_MULTILINE = PDF_EXPORTER_PROPERTIES_PREFIX + "field.text.multiline";
-	
+
 	/**
-	 * 
+	 *
 	 */
 	@Property(
 		category = PropertyConstants.CATEGORY_EXPORT,
@@ -434,9 +435,9 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		sinceVersion = PropertyConstants.VERSION_6_12_0
 		)
 	public static final String PDF_FIELD_VALUE = PDF_EXPORTER_PROPERTIES_PREFIX + "field.value";
-	
+
 	/**
-	 * 
+	 *
 	 */
 	@Property(
 		category = PropertyConstants.CATEGORY_EXPORT,
@@ -445,9 +446,9 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		valueType = PdfFieldCheckTypeEnum.class
 		)
 	public static final String PDF_FIELD_CHECK_TYPE = PDF_EXPORTER_PROPERTIES_PREFIX + "field.check.type";
-	
+
 	/**
-	 * 
+	 *
 	 */
 	@Property(
 		category = PropertyConstants.CATEGORY_EXPORT,
@@ -455,9 +456,9 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		sinceVersion = PropertyConstants.VERSION_6_12_0
 		)
 	public static final String PDF_FIELD_NAME = PDF_EXPORTER_PROPERTIES_PREFIX + "field.name";
-	
+
 	/**
-	 * 
+	 *
 	 */
 	@Property(
 		category = PropertyConstants.CATEGORY_EXPORT,
@@ -466,9 +467,9 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		valueType = Boolean.class
 		)
 	public static final String PDF_FIELD_CHECKED = PDF_EXPORTER_PROPERTIES_PREFIX + "field.checked";
-	
+
 	/**
-	 * 
+	 *
 	 */
 	@Property(
 		category = PropertyConstants.CATEGORY_EXPORT,
@@ -477,9 +478,9 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		valueType = Boolean.class
 		)
 	public static final String PDF_FIELD_READ_ONLY = PDF_EXPORTER_PROPERTIES_PREFIX + "field.read.only";
-	
+
 	/**
-	 * 
+	 *
 	 */
 	@Property(
 		category = PropertyConstants.CATEGORY_EXPORT,
@@ -488,9 +489,9 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		valueType = PdfFieldBorderStyleEnum.class
 		)
 	public static final String PDF_FIELD_BORDER_STYLE = PDF_EXPORTER_PROPERTIES_PREFIX + "field.border.style";
-	
+
 	/**
-	 * 
+	 *
 	 */
 	@Property(
 		category = PropertyConstants.CATEGORY_EXPORT,
@@ -499,9 +500,9 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		sinceVersion = PropertyConstants.VERSION_6_12_0
 		)
 	public static final String PDF_FIELD_CHOICE_SEPARATORS = PDF_EXPORTER_PROPERTIES_PREFIX + "field.choice.separators";
-	
+
 	/**
-	 * 
+	 *
 	 */
 	@Property(
 		category = PropertyConstants.CATEGORY_EXPORT,
@@ -509,9 +510,9 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		sinceVersion = PropertyConstants.VERSION_6_12_0
 		)
 	public static final String PDF_FIELD_CHOICES = PDF_EXPORTER_PROPERTIES_PREFIX + "field.choices";
-	
+
 	/**
-	 * 
+	 *
 	 */
 	@Property(
 		category = PropertyConstants.CATEGORY_EXPORT,
@@ -521,7 +522,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		defaultValue = PropertyConstants.BOOLEAN_FALSE
 		)
 	public static final String PDF_FIELD_COMBO_EDIT = PDF_EXPORTER_PROPERTIES_PREFIX + "field.combo.edit";
-	
+
 	/**
 	 * The exporter key, as used in
 	 * {@link GenericElementHandlerEnviroment#getElementHandler(JRGenericElementType, String)}.
@@ -595,7 +596,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 	private boolean fillAlphaSet = false;
 	private PdfGState[] strokeAlphaStates = new PdfGState[256];
 	private boolean strokeAlphaSet = false;
-	
+
 	/**
 	 * @see #JRPdfExporter(JasperReportsContext)
 	 */
@@ -737,12 +738,12 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		
 		if (configuration.isForceLineBreakPolicy())
 		{
-			splitCharacter = new BreakIteratorSplitCharacter();
+			splitCharacter = new BreakIteratorSplitCharacter(BreakIterator.getLineInstance(new Locale("th","TH")));
 		}
 		
 		defaultIndentFirstLine = propertiesUtil.getBooleanProperty(jasperPrint, JRPrintText.PROPERTY_AWT_INDENT_FIRST_LINE, true);
 		defaultJustifyLastLine = propertiesUtil.getBooleanProperty(jasperPrint, JRPrintText.PROPERTY_AWT_JUSTIFY_LAST_LINE, false);
-		
+
 		crtOddPageOffsetX = configuration.getOddPageOffsetX();
 		crtOddPageOffsetY = configuration.getOddPageOffsetY();
 		crtEvenPageOffsetX = configuration.getEvenPageOffsetX();
@@ -1218,7 +1219,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			radioGroups = null;
 			radioFieldFactories = null; // radio groups that overflow unto next page don't seem to work; reset everything as it does not make sense to keep them
 		}
-		
+
 		tagHelper.endPage();
 
 		JRExportProgressMonitor progressMonitor = getCurrentItemConfiguration().getProgressMonitor();
@@ -1305,7 +1306,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		int lcOffsetX = getOffsetX();
 		int lcOffsetY = getOffsetY();
 
-		float lineWidth = line.getLinePen().getLineWidth(); 
+		float lineWidth = line.getLinePen().getLineWidth();
 		if (lineWidth > 0f)
 		{
 			preparePen(line.getLinePen(), PdfContentByte.LINE_CAP_BUTT);
@@ -1612,7 +1613,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 
 		resetPen();
 		resetFillColor();
-		
+
 		pdfContentByte.setLineDash(0f);
 	}
 
@@ -1828,7 +1829,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			int translateX = xoffset;
 			int translateY = yoffset;
 			int angle = 0;
-			
+
 			switch (printImage.getRotation())
 			{
 				case LEFT :
@@ -1904,7 +1905,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			
 			image.setRotationDegrees(angle);
 
-			return 
+			return
 				new InternalImageProcessorResult(
 					new Chunk(image, 0, 0), 
 					image.getScaledWidth(), 
@@ -2007,7 +2008,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			int yoffset = 0;
 
 			image.setRotationDegrees(0); // reset in case the image is from cache
-			
+
 			switch (printImage.getRotation())
 			{
 				case LEFT :
@@ -2042,7 +2043,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 					yoffset = (int)(ImageUtil.getYAlignFactor(printImage) * (availableImageHeight - image.getPlainHeight()));
 				}
 			}
-			
+
 			xoffset = (xoffset < 0 ? 0 : xoffset);
 			yoffset = (yoffset < 0 ? 0 : yoffset);
 			
@@ -2074,16 +2075,16 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			{
 				case CLIP:
 				{
-					Dimension2D dimension = 
-						renderer instanceof DimensionRenderable 
-						? ((DimensionRenderable)renderer).getDimension(jasperReportsContext) 
+					Dimension2D dimension =
+						renderer instanceof DimensionRenderable
+						? ((DimensionRenderable)renderer).getDimension(jasperReportsContext)
 						: null;
 					if (dimension != null)
 					{
 						renderWidth = dimension.getWidth();
 						renderHeight = dimension.getHeight();
 					}
-						
+
 					templateWidth = availableImageWidth;
 					templateHeight = availableImageHeight;
 
@@ -2175,16 +2176,16 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 				case RETAIN_SHAPE:
 				default:
 				{
-					Dimension2D dimension = 
-						renderer instanceof DimensionRenderable 
-						? ((DimensionRenderable)renderer).getDimension(jasperReportsContext) 
+					Dimension2D dimension =
+						renderer instanceof DimensionRenderable
+						? ((DimensionRenderable)renderer).getDimension(jasperReportsContext)
 						: null;
 					if (dimension != null)
 					{
 						renderWidth = dimension.getWidth();
 						renderHeight = dimension.getHeight();
 					}
-						
+
 					switch (printImage.getRotation())
 					{
 						case LEFT:
@@ -2274,7 +2275,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			try
 			{
 				g.translate(
-					translateX, 
+					translateX,
 					translateY
 					);
 
@@ -2706,7 +2707,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			}
 
 			pdfEncoding = family.getPdfEncoding() == null ? jrFont.getPdfEncoding() : family.getPdfEncoding();
-			isPdfEmbedded = family.isPdfEmbedded() == null ? jrFont.isPdfEmbedded() : family.isPdfEmbedded(); 
+			isPdfEmbedded = family.isPdfEmbedded() == null ? jrFont.isPdfEmbedded() : family.isPdfEmbedded();
 			isPdfSimulatedBold = jrFont.isBold() && ((pdfFontStyle & java.awt.Font.BOLD) == 0); 
 			isPdfSimulatedItalic = jrFont.isItalic() && ((pdfFontStyle & java.awt.Font.ITALIC) == 0); 
 		}
@@ -2862,14 +2863,14 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 
 		int forecolorAlpha = getSingleForecolorAlpha(styledText);
 		setFillColorAlpha(forecolorAlpha);
-		
+
 		/* rendering only non empty texts  */
 		if (styledText.length() > 0)
 		{
 			textRenderer.render();
 		}
 		tagHelper.endText();
-		
+
 		resetFillColor();
 
 		atrans = new AffineTransform();
@@ -2890,7 +2891,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		{
 			return 255;
 		}
-		
+
 		List<JRStyledText.Run> runs = styledText.getRuns();
 		if (runs.size() > 1)
 		{
@@ -2905,10 +2906,10 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 				}
 			}
 		}
-		
+
 		return forecolor.getAlpha();
 	}
-	
+
 	/**
 	 *
 	 */
@@ -2920,17 +2921,17 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			text.getX() + exporterContext.getOffsetX() + text.getWidth(),
 			jasperPrint.getPageHeight() - text.getY() - exporterContext.getOffsetY() - text.getHeight()
 			);
-		
+
 		String fieldName = text.getPropertiesMap().getProperty(PDF_FIELD_NAME);
 		fieldName = fieldName == null || fieldName.trim().length() == 0 ? "FIELD_" + text.getUUID() : fieldName;
-		
+
 		TextField pdfTextField = new TextField(pdfWriter, rectangle, fieldName);
 		if (ModeEnum.OPAQUE == text.getModeValue())
 		{
 			pdfTextField.setBackgroundColor(text.getBackcolor());
 		}
 		pdfTextField.setTextColor(text.getForecolor());
-		
+
 		switch (text.getHorizontalTextAlign())
 		{
 			case RIGHT :
@@ -2946,7 +2947,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			default :
 				pdfTextField.setAlignment(Element.ALIGN_LEFT);
 		}
-		
+
 		JRPen pen = getFieldPen(text);
 		if (pen != null)
 		{
@@ -2965,7 +2966,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 				pdfTextField.setBorderStyle(borderStyle.getValue());
 			}
 		}
-		
+
 		String value = null;
 		if (text.getPropertiesMap().containsProperty(PDF_FIELD_VALUE))
 		{
@@ -2975,7 +2976,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		{
 			value = text.getFullText();
 		}
-		
+
 		if (
 			fieldType == PdfFieldTypeEnum.COMBO
 			|| fieldType == PdfFieldTypeEnum.LIST
@@ -3003,7 +3004,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			{
 				pdfTextField.setOptions(pdfTextField.getOptions() | TextField.EDIT);
 			}
-			
+
 			if (value != null && choices != null)
 			{
 				int i = 0;
@@ -3035,9 +3036,9 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 				pdfTextField.setOptions(pdfTextField.getOptions() | TextField.READ_ONLY);
 			}
 		}
-		
+
 //		pdfTextField.setExtraMargin(0, 0);
-		
+
 		Map<Attribute,Object> attributes = new HashMap<Attribute,Object>();
 		fontUtil.getAttributesWithoutAwtFont(attributes, text);
 		Font pdfFont = getFont(attributes, getLocale(), false);
@@ -3045,24 +3046,24 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		pdfTextField.setFont(pdfFont.getBaseFont());
 		pdfTextField.setFontSize(text.getFontsize());
 //		pdfTextField.setExtensionFont(pdfFont.getBaseFont());
-		
+
 		boolean isMultiLine = JRPropertiesUtil.asBoolean(text.getPropertiesMap().getProperty(PDF_FIELD_TEXT_MULTILINE), false);
 		if (isMultiLine)
 		{
 			pdfTextField.setOptions(pdfTextField.getOptions() | TextField.MULTILINE);
 		}
-		
+
 //		text.setRotation(90);
 		pdfTextField.setVisibility(TextField.VISIBLE);
-		
+
 		PdfFormField field = null;
 
 		try
 		{
-			field = 
-				fieldType == PdfFieldTypeEnum.COMBO 
-				? pdfTextField.getComboField() 
-				: (fieldType == PdfFieldTypeEnum.LIST 
+			field =
+				fieldType == PdfFieldTypeEnum.COMBO
+				? pdfTextField.getComboField()
+				: (fieldType == PdfFieldTypeEnum.LIST
 					? pdfTextField.getListField()
 					: pdfTextField.getTextField());
 		}
@@ -3073,7 +3074,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 
 		pdfWriter.addAnnotation(field);
 	}
-	
+
 	/**
 	 *
 	 */
@@ -3085,12 +3086,12 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			element.getX() + exporterContext.getOffsetX() + element.getWidth(),
 			jasperPrint.getPageHeight() - element.getY() - exporterContext.getOffsetY() - element.getHeight()
 			);
-		
+
 		String fieldName = element.getPropertiesMap().getProperty(PDF_FIELD_NAME);
 		fieldName = fieldName == null || fieldName.trim().length() == 0 ? "FIELD_" + element.getUUID() : fieldName;
-		
+
 		RadioCheckField checkField = new RadioCheckField(pdfWriter, rectangle, fieldName, "checked");
-		
+
 		PdfFieldCheckTypeEnum checkType = PdfFieldCheckTypeEnum.getByName(element.getPropertiesMap().getProperty(PDF_FIELD_CHECK_TYPE));
 		if (checkType != null)
 		{
@@ -3121,7 +3122,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 				checkField.setBorderStyle(borderStyle.getValue());
 			}
 		}
-		
+
 		String checked = element.getPropertiesMap().getProperty(PDF_FIELD_CHECKED);
 		if (checked != null)
 		{
@@ -3136,7 +3137,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 				checkField.setOptions(checkField.getOptions() | TextField.READ_ONLY);
 			}
 		}
-		
+
 		PdfFormField ck = null;
 
 		try
@@ -3150,7 +3151,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 
 		pdfWriter.addAnnotation(ck);
 	}
-	
+
 	/**
 	 *
 	 */
@@ -3162,10 +3163,10 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			element.getX() + exporterContext.getOffsetX() + element.getWidth(),
 			jasperPrint.getPageHeight() - element.getY() - exporterContext.getOffsetY() - element.getHeight()
 			);
-		
+
 		String fieldName = element.getPropertiesMap().getProperty(PDF_FIELD_NAME);
 		fieldName = fieldName == null || fieldName.trim().length() == 0 ? "FIELD_" + element.getUUID() : fieldName;
-		
+
 		RadioCheckField radioField = radioFieldFactories == null ? null : radioFieldFactories.get(fieldName);
 		if (radioField == null)
 		{
@@ -3209,7 +3210,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 				radioField.setBorderStyle(borderStyle.getValue());
 			}
 		}
-		
+
 		radioField.setOnValue("FIELD_" + element.getUUID());
 
 		String checked = element.getPropertiesMap().getProperty(PDF_FIELD_CHECKED);
@@ -3224,7 +3225,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 				radioField.setOptions(radioField.getOptions() | TextField.READ_ONLY);
 			}
 		}
-		
+
 		PdfFormField radioGroup = radioGroups == null ? null : radioGroups.get(fieldName);
 		if (radioGroup == null)
 		{
@@ -3245,13 +3246,13 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			throw new JRRuntimeException(e);
 		}
 	}
-	
+
 	protected JRPen getFieldPen(JRPrintElement element)
 	{
 		JRPen pen = null;
 
 		JRLineBox box = element instanceof JRBoxContainer ? ((JRBoxContainer)element).getLineBox() : null;
-		
+
 		if (box == null)
 		{
 			pen = element instanceof JRCommonGraphicElement ? ((JRCommonGraphicElement)element).getLinePen() : null;
@@ -3287,7 +3288,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 
 		return pen;
 	}
-	
+
 	protected AbstractPdfTextRenderer getTextRenderer(JRPrintText text, JRStyledText styledText)
 	{
 		AbstractPdfTextRenderer textRenderer;
@@ -3297,9 +3298,9 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			&& canUseGlyphRendering(text, styledText)
 			)
 		{
-			textRenderer = 
+			textRenderer =
 				new PdfGlyphRenderer(
-					jasperReportsContext, 
+					jasperReportsContext,
 					awtIgnoreMissingFont,
 					glyphRendererAddActualText && !tagHelper.isTagged,
 					defaultIndentFirstLine,
@@ -3309,20 +3310,20 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		else if (text.getLeadingOffset() == 0)
 		{
 			// leading offset is non-zero only for multiline texts that have at least one tab character or some paragraph indent (first, left or right)
-			textRenderer = 
+			textRenderer =
 				new PdfTextRenderer(
-					jasperReportsContext, 
-					awtIgnoreMissingFont, 
+					jasperReportsContext,
+					awtIgnoreMissingFont,
 					defaultIndentFirstLine,
 					defaultJustifyLastLine
 					);//FIXMENOW make some reusable instances here and below
 		}
 		else
 		{
-			textRenderer = 
+			textRenderer =
 				new SimplePdfTextRenderer(
-					jasperReportsContext, 
-					awtIgnoreMissingFont, 
+					jasperReportsContext,
+					awtIgnoreMissingFont,
 					defaultIndentFirstLine,
 					defaultJustifyLastLine
 					);//FIXMETAB optimize this
@@ -3564,7 +3565,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 					);
 				pdfContentByte.stroke();
 			}
-			
+
 			resetPen();
 		}
 	}
@@ -3620,7 +3621,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 					);
 				pdfContentByte.stroke();
 			}
-			
+
 			resetPen();
 		}
 	}
@@ -3676,7 +3677,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 					);
 				pdfContentByte.stroke();
 			}
-			
+
 			resetPen();
 		}
 	}
@@ -3732,7 +3733,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 					);
 				pdfContentByte.stroke();
 			}
-			
+
 			resetPen();
 		}
 	}
@@ -3806,7 +3807,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			}
 		}
 	}
-	
+
 	private void resetPen()
 	{
 		resetStrokeColor();
@@ -3820,13 +3821,13 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			setStrokeAlpha(alpha);
 			strokeAlphaSet = true;
 		}
-		
+
 		pdfContentByte.setRGBColorStroke(
 				color.getRed(),
 				color.getGreen(),
-				color.getBlue());		
+				color.getBlue());
 	}
-	
+
 	protected void resetStrokeColor()
 	{
 		if (strokeAlphaSet)
@@ -3854,7 +3855,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 		pdfContentByte.setRGBColorFill(
 				color.getRed(),
 				color.getGreen(),
-				color.getBlue());		
+				color.getBlue());
 	}
 
 
@@ -3866,7 +3867,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			fillAlphaSet = true;
 		}
 	}
-	
+
 	protected void resetFillColor()
 	{
 		if (fillAlphaSet)
@@ -4042,7 +4043,7 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 			int y = frame.getY() + getOffsetY();
 
 			Color backcolor = frame.getBackcolor();
-			
+
 			setFillColor(backcolor);
 			pdfContentByte.rectangle(
 				x,
