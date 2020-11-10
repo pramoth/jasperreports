@@ -25,6 +25,7 @@ package net.sf.jasperreports.engine.util;
 
 import java.text.BreakIterator;
 import java.text.CharacterIterator;
+import java.util.Locale;
 
 import net.sf.jasperreports.engine.JRRuntimeException;
 import net.sf.jasperreports.export.PdfReportConfiguration;
@@ -52,7 +53,7 @@ public class BreakIteratorSplitCharacter implements SplitCharacter
 	
 	public BreakIteratorSplitCharacter()
 	{
-		this(BreakIterator.getLineInstance());
+		this(BreakIterator.getLineInstance(new Locale("th","TH","TH")));
 	}
 	
 	public BreakIteratorSplitCharacter(BreakIterator breakIter)

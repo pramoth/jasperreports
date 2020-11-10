@@ -28,8 +28,10 @@ import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextLayout;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import net.sf.jasperreports.engine.JRParagraph;
@@ -418,7 +420,7 @@ public abstract class AbstractTextRenderer
 		TabStop nextTabStop = null;
 		boolean requireNextWord = false;
 	
-		LineBreakMeasurer lineMeasurer = new LineBreakMeasurer(paragraph, getFontRenderContext());//grx.getFontRenderContext()
+		LineBreakMeasurer lineMeasurer = new LineBreakMeasurer(paragraph,BreakIterator.getLineInstance(new Locale("th","TH","TH")), getFontRenderContext());//grx.getFontRenderContext()
 
 		// the paragraph is rendered one line at a time
 		while (lineMeasurer.getPosition() < paragraph.getEndIndex() && !isMaxHeightReached)
@@ -598,7 +600,7 @@ public abstract class AbstractTextRenderer
 										startIndex, 
 										startIndex + 1
 										);
-					 			LineBreakMeasurer lbm = new LineBreakMeasurer(tmpText.getIterator(), getFontRenderContext());
+					 			LineBreakMeasurer lbm = new LineBreakMeasurer(tmpText.getIterator(), BreakIterator.getLineInstance(new Locale("th","TH","TH")), getFontRenderContext());
 					 			TextLayout tlyt = lbm.nextLayout(100);
 								maxAscent = tlyt.getAscent();
 								maxDescent = tlyt.getDescent();

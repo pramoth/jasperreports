@@ -31,6 +31,7 @@ import java.text.AttributedString;
 import java.text.BreakIterator;
 import java.text.CharacterIterator;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 import net.sf.jasperreports.engine.JRCommonText;
@@ -103,8 +104,8 @@ public class ComplexTextLineWrapper implements TextLineWrapper
 	protected void startParagraph(AttributedCharacterIterator paragraph, boolean truncateAtChar)
 	{
 		this.paragraph = paragraph;
-		BreakIterator breakIt = truncateAtChar ? BreakIterator.getCharacterInstance() 
-				: BreakIterator.getLineInstance();
+		BreakIterator breakIt = truncateAtChar ? BreakIterator.getCharacterInstance(new Locale("th","TH","TH"))
+				: BreakIterator.getLineInstance(new Locale("th","TH","TH"));
 		lineMeasurer = new LineBreakMeasurer(paragraph, breakIt, context.getFontRenderContext());
 	}
 
@@ -131,7 +132,7 @@ public class ComplexTextLineWrapper implements TextLineWrapper
 	public TextLine baseTextLine(int index)
 	{
 		AttributedString tmpText = new AttributedString(paragraph, index, index + 1);
-		LineBreakMeasurer lbm = new LineBreakMeasurer(tmpText.getIterator(), context.getFontRenderContext());
+		LineBreakMeasurer lbm = new LineBreakMeasurer(tmpText.getIterator(),BreakIterator.getLineInstance(new Locale("th","TH","TH")), context.getFontRenderContext());
 		TextLayout tlyt = lbm.nextLayout(100);//FIXME what is this? why 100?
 		return new TextLayoutLine(tlyt);
 	}

@@ -736,9 +736,9 @@ public class JRPdfExporter extends JRAbstractExporter<PdfReportConfiguration, Pd
 
 		PdfReportConfiguration configuration = getCurrentItemConfiguration();
 		
-		if (configuration.isForceLineBreakPolicy())
+		//if (configuration.isForceLineBreakPolicy())
 		{
-			splitCharacter = new BreakIteratorSplitCharacter(BreakIterator.getLineInstance(new Locale("th","TH")));
+			splitCharacter = new BreakIteratorSplitCharacter(BreakIterator.getLineInstance(new Locale("th","TH","TH")));
 		}
 		
 		defaultIndentFirstLine = propertiesUtil.getBooleanProperty(jasperPrint, JRPrintText.PROPERTY_AWT_INDENT_FIRST_LINE, true);

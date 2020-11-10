@@ -442,8 +442,8 @@ public class SimpleTextLineWrapper implements TextLineWrapper
 		paragraphOffset = start;
 		paragraphPosition = 0;
 		
-		paragraphBreakIterator = truncateAtChar ? BreakIterator.getCharacterInstance()
-				: BreakIterator.getLineInstance();
+		paragraphBreakIterator = truncateAtChar ? BreakIterator.getCharacterInstance(new Locale("th","TH","TH"))
+				: BreakIterator.getLineInstance(new Locale("th","TH","TH"));
 		paragraphBreakIterator.setText(paragraphText);
 	}
 
@@ -573,9 +573,9 @@ public class SimpleTextLineWrapper implements TextLineWrapper
 		AttributedString attributedLine = new AttributedString(textLine, attributes);
 
 		// we need a fresh iterator for the line
-		BreakIterator breakIterator = paragraphTruncateAtChar ? BreakIterator.getCharacterInstance()
-				: BreakIterator.getLineInstance();
-		LineBreakMeasurer breakMeasurer = new LineBreakMeasurer(attributedLine.getIterator(), 
+		BreakIterator breakIterator = paragraphTruncateAtChar ? BreakIterator.getCharacterInstance(new Locale("th","TH","TH"))
+				: BreakIterator.getLineInstance(new Locale("th","TH","TH"));
+		LineBreakMeasurer breakMeasurer = new LineBreakMeasurer(attributedLine.getIterator(),
 				breakIterator, context.getFontRenderContext());
 		int breakIndex = breakMeasurer.nextOffset(width, endLimit - paragraphPosition, requireWord) 
 				+ paragraphPosition;

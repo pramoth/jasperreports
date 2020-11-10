@@ -728,8 +728,8 @@ public class TextMeasurer implements JRTextMeasurer
 			
 			BreakIterator breakIterator = 
 				truncateAtChar 
-				? BreakIterator.getCharacterInstance(new Locale("th","TH"))
-				: BreakIterator.getLineInstance(new Locale("th","TH"));
+				? BreakIterator.getCharacterInstance(new Locale("th","TH","TH"))
+				: BreakIterator.getLineInstance(new Locale("th","TH","TH"));
 			breakIterator.setText(text);
 
 			if (renderNextLine(lastLineWrapper, null, new int[]{0}, new TabStop[]{null}, new boolean[]{false}))
